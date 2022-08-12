@@ -9,11 +9,10 @@ namespace DataModel
         SciFi, Science, Classic
     }
 
-    public class BookDescription: DataElement
+    public class BookDescription: DataElement, IDataErrorInfo
     {
         private string? title;
 
-        [Required]
         public string Title
         {
             get => title ?? "";
@@ -39,7 +38,7 @@ namespace DataModel
 
         private string? author;
 
-        [Required]
+      
         public string? Author
         {
             get => author;
@@ -64,8 +63,23 @@ namespace DataModel
             }
         }
 
-        
+        public string Error => throw new NotImplementedException();
 
-
+        public string this[string columnName]
+        {
+            get
+            {
+                string error = string.Empty;
+                switch (columnName)
+                {
+                    case nameof(Title): if (string.IsNullOrEmpty(Title)) error = "Please input Title";
+                        break;
+                    case "Author":
+                        if (string.IsNullOrEmpty(Author)) error = "Please input Author";
+                        break;
+                }
+                return error;
+            }
+        }
     }
 }
