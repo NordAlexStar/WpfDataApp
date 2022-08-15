@@ -8,9 +8,11 @@
         Title="MainWindow" Height="450" Width="800">
 
     <Window.CommandBindings>
-
         <CommandBinding Command="local:View.Add" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed"></CommandBinding>
         <CommandBinding Command="local:View.ChangeMode" CanExecute="CommandBinding_CanExecute_1" Executed="CommandBinding_Executed_1"></CommandBinding>
+        <CommandBinding Command="local:View.Save" CanExecute="CommandBinding_CanExecute_2" Executed="CommandBinding_Executed_2"></CommandBinding>
+        <CommandBinding Command="local:View.Load" Executed="CommandBinding_Executed_3"></CommandBinding>
+        <CommandBinding Command="local:View.Delete" Executed="CommandBinding_Executed_4"></CommandBinding>
     </Window.CommandBindings>
     <Window.Resources>
         
@@ -39,8 +41,8 @@
         </Grid.ColumnDefinitions>
         <Menu Grid.ColumnSpan="2">
             <MenuItem Header="File">
-                <MenuItem Header="Load"></MenuItem>
-                <MenuItem Header="Save"></MenuItem>
+                <MenuItem Header="Load" Command="local:View.Load"></MenuItem>
+                <MenuItem Header="Save" Command="local:View.Save"></MenuItem>
             </MenuItem>
             <MenuItem Header="Data">
                 <MenuItem Header="Add" Command="local:View.Add"></MenuItem>
@@ -55,13 +57,10 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <ListBox Name="lbData" ItemsSource="{Binding Books}">
-
-               
-
+            <ListBox Name="lbData" ItemsSource="{Binding Books}" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border Padding="2" BorderThickness="1" BorderBrush="Bisque">
+                        <Border Padding="2" BorderThickness="1" BorderBrush="Bisque" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition></RowDefinition>
@@ -86,7 +85,7 @@
 
         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2">
             <Button Margin="2" Command="local:View.Add" >Add</Button>
-            <Button Margin="2">Remove</Button>
+            <Button Margin="2" Command="local:View.Delete">Remove</Button>
             <ToggleButton Margin="2" Command="local:View.ChangeMode" Name="btnEdit" 
                           IsChecked="{Binding ElementName=DataUGrid, Path=IsEnabled, Mode=OneWay}">Edit</ToggleButton>
         </StackPanel>

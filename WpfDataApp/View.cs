@@ -31,12 +31,21 @@ namespace WpfDataApp
         public View()
         {
             IsEditedMode = false;
+            Books = new ObservableCollection<BookDescription>();
         }
 
         private bool isEditedMode;
         public bool IsEditedMode { get => isEditedMode; set { isEditedMode = value; OnPropertyChanged(); } }
 
-        public ObservableCollection<BookDescription>? Books { get; set; } = new ObservableCollection<BookDescription>();
+        private ObservableCollection<BookDescription>? books;
+
+        public ObservableCollection<BookDescription>? Books
+        {
+            get => books; set
+            {
+                { books = value; OnPropertyChanged(); }
+            }
+        }
         public List<Genre> Genres { get => Enum.GetValues(typeof(Genre)).Cast<Genre>().ToList(); }
 
     }
