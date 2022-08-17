@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfDataApp"
+        
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
@@ -15,8 +16,23 @@
         <CommandBinding Command="local:View.Delete" Executed="CommandBinding_Executed_4"></CommandBinding>
     </Window.CommandBindings>
     <Window.Resources>
+
+        <Style TargetType="{x:Type Button}">
+            <EventSetter Event="Click" Handler="ButtonBase_Click"></EventSetter>
+        </Style>
+
+        <Style TargetType="{x:Type ToggleButton}" >
+            <EventSetter Event="Click" Handler="ButtonBase_Click"></EventSetter>
+        </Style>
         
-        <Style TargetType="TextBox">
+        <Style TargetType="{x:Type Control}">
+            <Setter Property="Control.FontSize"  Value="24" />
+            <Setter Property="Control.Foreground"  Value="Blue" />
+            <Setter Property="Control.HorizontalAlignment" Value="Stretch" />
+        </Style>
+        
+        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type Control}}">
+            <!--Тут наследуется стиль от ресурса до которого мы добираемся по целевому типу -->
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="True">
                     <Setter Property="ToolTip"
@@ -24,6 +40,9 @@
                     Path=(Validation.Errors)[0].ErrorContent}" />
                     <Setter Property="Foreground" Value="Red" />
                 </Trigger>
+                
+                <!--привязки в сеттерах так же работают-->
+                
             </Style.Triggers>
         </Style>
         
