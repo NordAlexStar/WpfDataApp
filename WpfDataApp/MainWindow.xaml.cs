@@ -128,29 +128,29 @@ namespace WpfDataApp
             }
         }
 
-        private void ButtonBase_Click(object sender, RoutedEventArgs e)
-        {
-            ButtonBase btn = sender as ButtonBase;
-            DispatcherTimer tmr = new DispatcherTimer(); // при щелчке создает объект DispatcherTimer, который 
-            tmr.Interval = TimeSpan.FromSeconds(0.1); // каждую десятую долю секунды
-            tmr.Tag = (btn, btn.FontSize, 24); // Сохраним для этого таймера кнопку его запустившую, стартовый размер шрифта и максимальный шрифт
-            tmr.Tick += TimerOnTick;                     // генерирует события Tick
-            tmr.Start();
-        }
+        //private void ButtonBase_Click(object sender, RoutedEventArgs e)
+        //{
+        //    ButtonBase btn = sender as ButtonBase;
+        //    DispatcherTimer tmr = new DispatcherTimer(); // при щелчке создает объект DispatcherTimer, который 
+        //    tmr.Interval = TimeSpan.FromSeconds(0.1); // каждую десятую долю секунды
+        //    tmr.Tag = (btn, btn.FontSize, 24); // Сохраним для этого таймера кнопку его запустившую, стартовый размер шрифта и максимальный шрифт
+        //    tmr.Tick += TimerOnTick;                     // генерирует события Tick
+        //    tmr.Start();
+        //}
 
-        void TimerOnTick(object sender, EventArgs args)
-        {
-            DispatcherTimer timer = (DispatcherTimer)sender;
+        //void TimerOnTick(object sender, EventArgs args)
+        //{
+        //    DispatcherTimer timer = (DispatcherTimer)sender;
 
-            var (btn, initFontSize, MaxSize) = ((ButtonBase, double, int))timer.Tag;
+        //    var (btn, initFontSize, MaxSize) = ((ButtonBase, double, int))timer.Tag;
 
-            btn.FontSize += 1; // увеличивает FontSize на 2 едицины каждую 0.1 секунды
+        //    btn.FontSize += 1; // увеличивает FontSize на 1 едицины каждую 0.1 секунды
 
-            if (btn.FontSize >= MaxSize) // если размер кнопки достигает 48 единиц
-            {
-                btn.FontSize = initFontSize; // кнопка восстанавливается в исходном размере
-                (sender as DispatcherTimer).Stop(); // таймер останавливается
-            }
-        }
+        //    if (btn.FontSize >= MaxSize) // если размер кнопки достигает MaxSize единиц
+        //    {
+        //        btn.FontSize = initFontSize; // кнопка восстанавливается в исходном размере
+        //        (sender as DispatcherTimer).Stop(); // таймер останавливается
+        //    }
+        //}
     }
 }

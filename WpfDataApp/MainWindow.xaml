@@ -18,11 +18,11 @@
     <Window.Resources>
 
         <Style TargetType="{x:Type Button}">
-            <EventSetter Event="Click" Handler="ButtonBase_Click"></EventSetter>
+           
         </Style>
 
         <Style TargetType="{x:Type ToggleButton}" >
-            <EventSetter Event="Click" Handler="ButtonBase_Click"></EventSetter>
+            
         </Style>
         
         <Style TargetType="{x:Type Control}">
