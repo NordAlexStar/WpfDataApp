@@ -61,8 +61,11 @@ namespace WpfDataApp
             View? model = DataContext as View;
             if (model != null)
             {
-                DataModel.BookDescription NewBook = new DataModel.BookDescription();
+                BookDescription NewBook = new DataModel.BookDescription();
+
                 model.Books.Add(NewBook);
+                model.DataBase.BookDescriptions.Add(NewBook);
+
                 this.lbData.SelectedItem = NewBook;
                 model.IsEditedMode = true;
                 tbTitle.Focus();
@@ -74,12 +77,13 @@ namespace WpfDataApp
             e.CanExecute = true;
         }
 
-        private void CommandBinding_Executed_1(object sender, ExecutedRoutedEventArgs e)
+        private async void CommandBinding_Executed_1(object sender, ExecutedRoutedEventArgs e)
         {
             View? model = DataContext as View;
             if (model != null)
             {
                 model.IsEditedMode = !model.IsEditedMode;
+                if (model.IsEditedMode == false) await model.DataBase.SaveChangesAsync();
             }
         }
 
@@ -94,63 +98,47 @@ namespace WpfDataApp
 
         private void CommandBinding_Executed_2(object sender, ExecutedRoutedEventArgs e)
         {
-            View? model = DataContext as View;
-            if (model != null)
-            {
-                
-                using (TextWriter writer = new StreamWriter("Data.xml"))
-                {
-                    XmlSerializer x = new XmlSerializer(typeof(ObservableCollection<BookDescription>));
-                    x.Serialize(writer, model.Books);
-                }
-            }
+           (DataContext as View).LoadData();
         }
 
-        private void CommandBinding_Executed_3(object sender, ExecutedRoutedEventArgs e)
+        private async void CommandBinding_Executed_3(object sender, ExecutedRoutedEventArgs e)
+        {
+            await (DataContext as View)?.DataBase.SaveChangesAsync();
+        }
+
+        private async void CommandBinding_Executed_4(object sender, ExecutedRoutedEventArgs e)
         {
             View? model = DataContext as View;
             if (model != null)
             {
-                using (TextReader writer = new StreamReader("Data.xml"))
-                {
-                    XmlSerializer x = new XmlSerializer(typeof(ObservableCollection<BookDescription>));
-                    model.Books = x.Deserialize(writer) as ObservableCollection<BookDescription>;
-                }
-            }
-        }
-
-        private void CommandBinding_Executed_4(object sender, ExecutedRoutedEventArgs e)
-        {
-            View? model = DataContext as View;
-            if (model != null)
-            {
+                model.DataBase.BookDescriptions.Remove(lbData.SelectedItem as BookDescription);
                 model.Books.Remove(lbData.SelectedItem as BookDescription);
+                await model.DataBase.SaveChangesAsync();
+
+
             }
         }
 
-        //private void ButtonBase_Click(object sender, RoutedEventArgs e)
-        //{
-        //    ButtonBase btn = sender as ButtonBase;
-        //    DispatcherTimer tmr = new DispatcherTimer(); // при щелчке создает объект DispatcherTimer, который 
-        //    tmr.Interval = TimeSpan.FromSeconds(0.1); // каждую десятую долю секунды
-        //    tmr.Tag = (btn, btn.FontSize, 24); // Сохраним для этого таймера кнопку его запустившую, стартовый размер шрифта и максимальный шрифт
-        //    tmr.Tick += TimerOnTick;                     // генерирует события Tick
-        //    tmr.Start();
-        //}
 
-        //void TimerOnTick(object sender, EventArgs args)
-        //{
-        //    DispatcherTimer timer = (DispatcherTimer)sender;
 
-        //    var (btn, initFontSize, MaxSize) = ((ButtonBase, double, int))timer.Tag;
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            View? model = DataContext as View;
+            if (lbData.SelectedItem != null)
+            {
 
-        //    btn.FontSize += 1; // увеличивает FontSize на 1 едицины каждую 0.1 секунды
-
-        //    if (btn.FontSize >= MaxSize) // если размер кнопки достигает MaxSize единиц
-        //    {
-        //        btn.FontSize = initFontSize; // кнопка восстанавливается в исходном размере
-        //        (sender as DispatcherTimer).Stop(); // таймер останавливается
-        //    }
-        //}
+                if (lbData.SelectedItem as BookDescription is BookDescription book)
+                {
+                    if (book.Author == null)
+                    {
+                        book.Author = new Author();
+                        if (model != null)
+                        {
+                            model.Authors.Add(book.Author);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

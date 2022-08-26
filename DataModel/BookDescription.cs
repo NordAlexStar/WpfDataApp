@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 
 namespace DataModel
@@ -9,9 +10,12 @@ namespace DataModel
         SciFi, Science, Classic
     }
 
-    public class BookDescription: DataElement, IDataErrorInfo
+    public class BookDescription : DataElement, IDataErrorInfo
     {
+        public int Id { get; set; }
+
         private string? title;
+
 
         public string Title
         {
@@ -36,13 +40,13 @@ namespace DataModel
             }
         }
 
-        private string? author;
-
-      
-        public string? Author
+        private Author? author;
+        public virtual Author? Author
         {
-            get => author;
-
+            get
+            {
+                return author;
+            }
             set
             {
                 author = value;
@@ -63,6 +67,11 @@ namespace DataModel
             }
         }
 
+        public override string ToString()
+        {
+            return Title;
+        }
+
         public string Error => throw new NotImplementedException();
 
         public string this[string columnName]
@@ -72,11 +81,10 @@ namespace DataModel
                 string error = string.Empty;
                 switch (columnName)
                 {
-                    case nameof(Title): if (string.IsNullOrEmpty(Title)) error = "Please input Title";
+                    case nameof(Title):
+                        if (string.IsNullOrEmpty(Title)) error = "Please input Title";
                         break;
-                    case "Author":
-                        if (string.IsNullOrEmpty(Author)) error = "Please input Author";
-                        break;
+
                 }
                 return error;
             }

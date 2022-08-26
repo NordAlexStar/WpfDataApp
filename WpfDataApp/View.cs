@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,15 +28,32 @@ namespace WpfDataApp
             Save = new RoutedCommand("Save", typeof(MainWindow));
         }
 
+        public DB DataBase { get; set; } = new DB();
 
         public View()
         {
             IsEditedMode = false;
-            Books = new ObservableCollection<BookDescription>();
+            LoadData();
+        }
+
+        public async void LoadData()
+        {
+            Books = new ObservableCollection<BookDescription>(await DataBase.BookDescriptions.ToListAsync());
+            Authors = new ObservableCollection<Author>(await DataBase.Authors.ToListAsync());
         }
 
         private bool isEditedMode;
         public bool IsEditedMode { get => isEditedMode; set { isEditedMode = value; OnPropertyChanged(); } }
+
+        private ObservableCollection<Author> authors;
+
+        public ObservableCollection<Author> Authors
+        {
+            get => authors; set
+            {
+                { authors = value; OnPropertyChanged(); }
+            }
+        }
 
         private ObservableCollection<BookDescription>? books;
 

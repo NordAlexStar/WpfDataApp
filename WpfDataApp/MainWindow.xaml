@@ -15,22 +15,23 @@
         <CommandBinding Command="local:View.Load" Executed="CommandBinding_Executed_3"></CommandBinding>
         <CommandBinding Command="local:View.Delete" Executed="CommandBinding_Executed_4"></CommandBinding>
     </Window.CommandBindings>
+    
     <Window.Resources>
 
         <Style TargetType="{x:Type Button}">
-           
+
         </Style>
 
         <Style TargetType="{x:Type ToggleButton}" >
-            
+
         </Style>
-        
+
         <Style TargetType="{x:Type Control}">
             <Setter Property="Control.FontSize"  Value="24" />
             <Setter Property="Control.Foreground"  Value="Blue" />
             <Setter Property="Control.HorizontalAlignment" Value="Stretch" />
         </Style>
-        
+
         <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type Control}}">
             <!--Тут наследуется стиль от ресурса до которого мы добираемся по целевому типу -->
             <Style.Triggers>
@@ -40,93 +41,154 @@
                     Path=(Validation.Errors)[0].ErrorContent}" />
                     <Setter Property="Foreground" Value="Red" />
                 </Trigger>
-                
+
                 <!--привязки в сеттерах так же работают-->
-                
+
             </Style.Triggers>
         </Style>
-        
+
     </Window.Resources>
+    
+    <TabControl>
+        
+        <TabItem Header="Books">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Menu Grid.ColumnSpan="2">
+                    <MenuItem Header="File">
+                        <MenuItem Header="Load" Command="local:View.Load"></MenuItem>
+                        <MenuItem Header="Save" Command="local:View.Save"></MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Data">
+                        <MenuItem Header="Add" Command="local:View.Add"></MenuItem>
+                        <MenuItem Header="Remove"></MenuItem>
+                        <MenuItem Header="Edit" Command="local:View.ChangeMode" ></MenuItem>
+                    </MenuItem>
+                </Menu>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Menu Grid.ColumnSpan="2">
-            <MenuItem Header="File">
-                <MenuItem Header="Load" Command="local:View.Load"></MenuItem>
-                <MenuItem Header="Save" Command="local:View.Save"></MenuItem>
-            </MenuItem>
-            <MenuItem Header="Data">
-                <MenuItem Header="Add" Command="local:View.Add"></MenuItem>
-                <MenuItem Header="Remove"></MenuItem>
-                <MenuItem Header="Edit" Command="local:View.ChangeMode" ></MenuItem>
-            </MenuItem>
-        </Menu>
+                <Grid Grid.Column="0" Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
 
-        <Grid Grid.Column="0" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
-            </Grid.RowDefinitions>
+                    <ListBox Name="lbData" ItemsSource="{Binding Books}" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="2" BorderThickness="1" BorderBrush="Bisque" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" >
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} {1}">
+                                                    <Binding Path="Author.Name"/>
+                                                    <Binding Path="Author.Surname"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock Grid.Row="1" Text="{Binding Title, TargetNullValue=Title}"></TextBlock>
+                                        <TextBlock Grid.Row="2" Text="{Binding Genre, TargetNullValue=Genre}"></TextBlock>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
 
-            <ListBox Name="lbData" ItemsSource="{Binding Books}" >
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border Padding="2" BorderThickness="1" BorderBrush="Bisque" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition></RowDefinition>
-                                    <RowDefinition></RowDefinition>
-                                    <RowDefinition></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Text="{Binding Author, TargetNullValue=Author}"></TextBlock>
-                                <TextBlock Grid.Row="1" Text="{Binding Title, TargetNullValue=Title}"></TextBlock>
-                                <TextBlock Grid.Row="2" Text="{Binding Genre, TargetNullValue=Genre}"></TextBlock>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" >
+                        <TextBlock Text="Items count: " Margin="5,0,0,0"></TextBlock>
+                        <TextBlock  Grid.Row="1" Margin="5,0,0,0" Text="{Binding ElementName=lbData, Path=Items.Count}"></TextBlock>
+                    </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="1" >
-                <TextBlock Text="Items count: " Margin="5,0,0,0"></TextBlock>
-                <TextBlock  Grid.Row="1" Margin="5,0,0,0" Text="{Binding ElementName=lbData, Path=Items.Count}"></TextBlock>
-            </StackPanel>
+                </Grid>
 
-        </Grid>
-
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2">
-            <Button Margin="2" Command="local:View.Add" >Add</Button>
-            <Button Margin="2" Command="local:View.Delete">Remove</Button>
-            <ToggleButton Margin="2" Command="local:View.ChangeMode" Name="btnEdit" 
+                <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2">
+                    <Button Margin="2" Command="local:View.Add" >Add</Button>
+                    <Button Margin="2" Command="local:View.Delete">Remove</Button>
+                    <ToggleButton Margin="2" Command="local:View.ChangeMode" Name="btnEdit" 
                           IsChecked="{Binding ElementName=DataUGrid, Path=IsEnabled, Mode=OneWay}">Edit</ToggleButton>
-        </StackPanel>
+                </StackPanel>
 
-        <UniformGrid Grid.Column="1" Grid.Row="1" IsEnabled="{Binding IsEditedMode}" Columns="2" Rows="4" Name="DataUGrid" Margin="0,0,5,0">
+                <UniformGrid Grid.Column="1" Grid.Row="1" IsEnabled="{Binding IsEditedMode}" Columns="2" Rows="4" Name="DataUGrid" Margin="0,0,5,0">
 
-            <TextBlock Text="Title"></TextBlock>
-            <TextBox x:Name="tbTitle" Text="{Binding ElementName=lbData, Path=SelectedItem.Title, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBlock Text="Title"></TextBlock>
+                    <TextBox x:Name="tbTitle" Text="{Binding ElementName=lbData, Path=SelectedItem.Title, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"></TextBox>
 
-            <TextBlock Text="Description"></TextBlock>
-            <TextBox Text="{Binding ElementName=lbData, Path=SelectedItem.Description, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBlock Text="Description"></TextBlock>
+                    <TextBox Text="{Binding ElementName=lbData, Path=SelectedItem.Description, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"></TextBox>
 
-            <TextBlock Text="Author"></TextBlock>
-            <TextBox Text="{Binding ElementName=lbData, Path=SelectedItem.Author, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBlock Text="Author"></TextBlock>
+                    <UniformGrid Rows="4" Columns="2" >
+                        <ComboBox ItemsSource="{Binding Authors}" Name="cbAuthor" DisplayMemberPath="Info"
+                                  SelectedItem="{Binding ElementName=lbData, Path=SelectedItem.Author}"></ComboBox>
 
-            <TextBlock Text="Genre"></TextBlock>
-            <ComboBox SelectedItem="{Binding ElementName=lbData, Path=SelectedItem.Genre, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                        <Button Click="Button_Click">+</Button>
+
+                        <TextBlock Text="Name"></TextBlock>
+                        <TextBox>
+                            <TextBox.Text>
+                                <Binding ElementName="cbAuthor" Path="SelectedItem.Name"  UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <ExceptionValidationRule/>
+                                       
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+
+                        <TextBlock Text="Surname"></TextBlock>
+                        <TextBox 
+                    Text="{Binding ElementName=cbAuthor, Path=SelectedItem.Surname,  UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+                        <TextBlock Text="About"></TextBlock>
+                        <TextBox 
+                    Text="{Binding ElementName=cbAuthor, Path=SelectedItem.About,  UpdateSourceTrigger=PropertyChanged}"></TextBox>
+
+                    </UniformGrid>
+
+                    <TextBlock Text="Genre"></TextBlock>
+                    <ComboBox SelectedItem="{Binding ElementName=lbData, Path=SelectedItem.Genre, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding Genres}" 
                       
                       ></ComboBox>
 
-        </UniformGrid>
+                </UniformGrid>
 
-    </Grid>
+            </Grid>
+        </TabItem>
+        
+        <TabItem Header="Authors">
+            <ListBox ItemsSource="{Binding Authors}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock TextWrapping="Wrap">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="Name" ></Binding>
+                                        <Binding Path="Surname"></Binding>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <TextBlock Text="{Binding About}"></TextBlock>
+                            <ListBox ItemsSource="{Binding Books}"></ListBox>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+        </TabItem>
+    </TabControl>
+
 </Window>
