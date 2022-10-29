@@ -62,10 +62,9 @@ namespace WpfDataApp
             if (model != null)
             {
                 BookDescription NewBook = new DataModel.BookDescription();
-
+                model.DataBase.Printeds.Add(NewBook);
+   
                 model.Books.Add(NewBook);
-                model.DataBase.BookDescriptions.Add(NewBook);
-
                 this.lbData.SelectedItem = NewBook;
                 model.IsEditedMode = true;
                 tbTitle.Focus();
@@ -98,7 +97,7 @@ namespace WpfDataApp
 
         private void CommandBinding_Executed_2(object sender, ExecutedRoutedEventArgs e)
         {
-           (DataContext as View).LoadData();
+            (DataContext as View).LoadData();
         }
 
         private async void CommandBinding_Executed_3(object sender, ExecutedRoutedEventArgs e)
@@ -127,18 +126,62 @@ namespace WpfDataApp
             if (lbData.SelectedItem != null)
             {
 
+                //if (lbData.SelectedItem as BookDescription is BookDescription book)
+                //{
+                //    if (book.Author == null)
+                //    {
+                //        book.Author = new Author();
+
+                //        if (model != null)
+                //        {
+                //            model.Authors.Add(book.Author);
+                //        }
+                //    }
+                //}
+            }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+            #region MyRegion
+            View? model = DataContext as View;
+            if (lbData.SelectedItem != null)
+            {
+
                 if (lbData.SelectedItem as BookDescription is BookDescription book)
                 {
-                    if (book.Author == null)
-                    {
-                        book.Author = new Author();
-                        if (model != null)
-                        {
-                            model.Authors.Add(book.Author);
-                        }
-                    }
+                    //if (book.IsMemberOfSeria != null)
+                    //{
+                    //    CreateEditSeria editor = new CreateEditSeria();
+                    //    editor.DataContext = book.IsMemberOfSeria;
+                    //    editor.ShowDialog();
+                    //}
+                    //else
+                    //{
+                    //    CreateEditSeria editor = new CreateEditSeria();
+                    //    Seria seria = new Seria();
+                    //    editor.DataContext = seria;
+                    //    SeriaElement element = new SeriaElement();
+
+                    //    element.Book = book;
+                    //    element.Seria = seria;
+                    //    element.IndexInSeria = 1;
+
+                    //    if (editor.ShowDialog() == true)
+                    //    {
+                    //        model.DataBase.SaveChanges();
+                    //    }
+                    //    else
+                    //    {
+                    //        book.IsMemberOfSeria = null;
+                    //        model.DataBase.Entry(seria).State = System.Data.Entity.EntityState.Detached;
+                    //        model.DataBase.Entry(element).State = System.Data.Entity.EntityState.Detached;
+                    //    }
+                    //}
                 }
             }
+            #endregion
         }
     }
 }

@@ -38,8 +38,12 @@ namespace WpfDataApp
 
         public async void LoadData()
         {
+            DataBase.Authors.Load();
+            Authors = DataBase.Authors.Local;
+
             Books = new ObservableCollection<BookDescription>(await DataBase.BookDescriptions.ToListAsync());
-            Authors = new ObservableCollection<Author>(await DataBase.Authors.ToListAsync());
+
+
         }
 
         private bool isEditedMode;
@@ -64,7 +68,7 @@ namespace WpfDataApp
                 { books = value; OnPropertyChanged(); }
             }
         }
-        public List<Genre> Genres { get => Enum.GetValues(typeof(Genre)).Cast<Genre>().ToList(); }
+        public List<Ganre> Genres { get => DataBase.Ganres.ToList(); }
 
     }
 }

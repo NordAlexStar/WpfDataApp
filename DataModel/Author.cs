@@ -16,6 +16,7 @@ namespace DataModel
         public Author()
         {
             Books = new ObservableCollection<BookDescription>();
+            DetaledInfo = new DetaledInfo();
         }
 
         public int Id { get; set; }
@@ -30,11 +31,17 @@ namespace DataModel
         [Required]
         public string Surname { get { return surname; } set { surname = value; OnPropertyChanged(); OnPropertyChanged(nameof(Info)); } }
 
-        string? about;
-        public string? About { get { return about; } set { about = value; OnPropertyChanged(); } }
+        private DetaledInfo? detaledInfo;
+        public DetaledInfo? DetaledInfo
+        {
+            get => detaledInfo;
 
-        string? about_;
-        public string? About_ { get { return about_; } set { about_ = value; OnPropertyChanged(); } }
+            set
+            {
+                detaledInfo = value;
+                OnPropertyChanged();
+            }
+        }
 
         public virtual ICollection<BookDescription> Books { get; set; }
 

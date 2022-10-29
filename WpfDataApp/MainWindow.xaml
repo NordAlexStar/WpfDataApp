@@ -120,13 +120,13 @@
                           IsChecked="{Binding ElementName=DataUGrid, Path=IsEnabled, Mode=OneWay}">Edit</ToggleButton>
                 </StackPanel>
 
-                <UniformGrid Grid.Column="1" Grid.Row="1" IsEnabled="{Binding IsEditedMode}" Columns="2" Rows="4" Name="DataUGrid" Margin="0,0,5,0">
+                <UniformGrid Grid.Column="1" Grid.Row="1" IsEnabled="{Binding IsEditedMode}" Columns="2" Name="DataUGrid" Margin="0,0,5,0">
 
                     <TextBlock Text="Title"></TextBlock>
                     <TextBox x:Name="tbTitle" Text="{Binding ElementName=lbData, Path=SelectedItem.Title, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"></TextBox>
 
                     <TextBlock Text="Description"></TextBlock>
-                    <TextBox Text="{Binding ElementName=lbData, Path=SelectedItem.Description, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    <TextBox Text="{Binding ElementName=lbData, Path=SelectedItem.DetaledInfo.Description, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"></TextBox>
 
                     <TextBlock Text="Author"></TextBlock>
                     <UniformGrid Rows="4" Columns="2" >
@@ -153,15 +153,27 @@
 
                         <TextBlock Text="About"></TextBlock>
                         <TextBox 
-                    Text="{Binding ElementName=cbAuthor, Path=SelectedItem.About,  UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    Text="{Binding ElementName=cbAuthor, Path=SelectedItem.DetaledInfo.Description,  UpdateSourceTrigger=PropertyChanged}"></TextBox>
 
                     </UniformGrid>
 
                     <TextBlock Text="Genre"></TextBlock>
-                    <ComboBox SelectedItem="{Binding ElementName=lbData, Path=SelectedItem.Genre, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
+                    <TreeView 
                       ItemsSource="{Binding Genres}" 
                       
-                      ></ComboBox>
+                      >
+                        <TreeView.ItemTemplate>
+                            <HierarchicalDataTemplate ItemsSource="{Binding Path=ChildGanres}">
+                                <TextBlock Text="{Binding Name}" />
+                            </HierarchicalDataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
+
+                    <TextBlock Text="InSeria"></TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding IsMemberOfSeria.Seria.Name}"></TextBlock>
+                        <Button MinWidth="40" Click="Button_Click_1">?</Button>
+                    </StackPanel>
 
                 </UniformGrid>
 
@@ -181,7 +193,7 @@
                                     </MultiBinding>
                                 </TextBlock.Text>
                             </TextBlock>
-                            <TextBlock Text="{Binding About}"></TextBlock>
+                            <TextBlock Text="{Binding DetaledInfo.Description}"></TextBlock>
                             <ListBox ItemsSource="{Binding Books}"></ListBox>
                         </StackPanel>
                     </DataTemplate>

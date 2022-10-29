@@ -10,35 +10,17 @@ namespace DataModel
         SciFi, Science, Classic
     }
 
-    public class BookDescription : DataElement, IDataErrorInfo
+    
+    public class BookDescription : Printed, IDataErrorInfo
     {
-        public int Id { get; set; }
-
-        private string? title;
-
-
-        public string Title
+        public BookDescription()
         {
-            get => title ?? "";
-            set
-            {
-                title = value;
-                OnPropertyChanged();
-            }
+            DetaledInfo = new DetaledInfo();
         }
 
-        private string? description;
+        public   string Fake { get; set; }
 
-        public string? Description
-        {
-            get => description;
-
-            set
-            {
-                description = value;
-                OnPropertyChanged();
-            }
-        }
+     //   public virtual SeriaElement? IsMemberOfSeria { get; set; }
 
         private Author? author;
         public virtual Author? Author
@@ -63,6 +45,20 @@ namespace DataModel
             set
             {
                 genre = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public virtual Ganre Ganre { get; set; }
+
+        private DetaledInfo? detaledInfo;
+        public DetaledInfo? DetaledInfo
+        {
+            get => detaledInfo;
+
+            set
+            {
+                detaledInfo = value;
                 OnPropertyChanged();
             }
         }
